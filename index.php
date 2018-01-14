@@ -1,4 +1,5 @@
 <?php
+session_start();
 //$pdo = connectToDb();
 require 'vendor/autoload.php';
 $query = require 'core/bootstrap.php';
