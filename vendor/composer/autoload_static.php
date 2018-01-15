@@ -18,6 +18,8 @@ class ComposerStaticInit91beeb3edd2e76be0899c5408c9833d8
         'Router' => __DIR__ . '/../..' . '/core/Router.php',
         'Task' => __DIR__ . '/../..' . '/models/Task.php',
         'TasksController' => __DIR__ . '/../..' . '/controllers/TasksController.php',
+        'Todo' => __DIR__ . '/../..' . '/models/Todo.php',
+        'TodoController' => __DIR__ . '/../..' . '/controllers/TodoController.php',
         'User' => __DIR__ . '/../..' . '/models/User.php',
         'UserController' => __DIR__ . '/../..' . '/controllers/UserController.php',
         'Validator' => __DIR__ . '/../..' . '/validation/Validator.php',

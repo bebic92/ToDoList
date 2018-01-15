@@ -1,8 +1,7 @@
 <?php
 
 $router->get('Drugi_dio_b','PagesController@main');
-$router->get('Drugi_dio_b/about','PagesController@about');
-$router->get('Drugi_dio_b/contact','PagesController@contact');
+// $router->get('Drugi_dio_b/contact','PagesController@contact');
 $router->get('Drugi_dio_b/registracija','UserController@create');
 $router->get('Drugi_dio_b/login','UserController@signIn');
 $router->get('Drugi_dio_b/tasks','TasksController@index');
@@ -13,3 +12,8 @@ $router->post('Drugi_dio_b/registracija','UserController@store');
 $router->get('Drugi_dio_b/verify','UserController@verify');
 $router->post('Drugi_dio_b/login','UserController@loginUser');
 $router->get('Drugi_dio_b/odjava','UserController@logoutUser');
+$router->get('Drugi_dio_b/todos','TodoController@allTodos');
+$router->post('Drugi_dio_b/todos','TodoController@sort');
+$router->get('Drugi_dio_b/todos/kreiraj','TodoController@createTodo');
+$router->post('Drugi_dio_b/todos/kreiraj','TodoController@storeTodo');
+$router->post('Drugi_dio_b/todos/delete','TodoController@deleteTodo');

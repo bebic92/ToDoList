@@ -2,20 +2,9 @@
 
 class PagesController{
 	public function main(){	
-		//$tasks = App::get('database')->getAll('todos');
-		$users = User::all();
-		//require 'views/index.view.php';
-		return view('index',[
-			'users' => $users
-			]);
-	}
-	public function contact()
-	{
-		return view('contact');
+
+		return view('index');
 	}
 
-	public function about(){
-		return view('about');
-	}
 
 }

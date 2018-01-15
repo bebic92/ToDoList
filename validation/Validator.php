@@ -30,7 +30,7 @@ class Validator{
 		}else
 		return;
 	}
-	public static function min($data,$fieldName, $value){
+	public static function min($data, $fieldName, $value){
 		if(strlen($data) < $value){
 			return 'Minimalan broj znakova za polje '. ucfirst($fieldName) .' je '. $value;
 		}else

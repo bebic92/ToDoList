@@ -17,6 +17,8 @@ return array(
     'Router' => $baseDir . '/core/Router.php',
     'Task' => $baseDir . '/models/Task.php',
     'TasksController' => $baseDir . '/controllers/TasksController.php',
+    'Todo' => $baseDir . '/models/Todo.php',
+    'TodoController' => $baseDir . '/controllers/TodoController.php',
     'User' => $baseDir . '/models/User.php',
     'UserController' => $baseDir . '/controllers/UserController.php',
     'Validator' => $baseDir . '/validation/Validator.php',

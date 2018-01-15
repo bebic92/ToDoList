@@ -4,10 +4,15 @@ class UserController{
 
 
 	public function create(){
-
+		if(isset($_SESSION['user_id'])){
+			return header('Location: /Drugi_dio_b/');
+		}
 		return view('registration/register');
 	}
 	public function signIn(){
+		if(isset($_SESSION['user_id'])){
+			return header('Location: /Drugi_dio_b/');
+		}
 		return view('registration/login');
 	}
 	public function store(){
@@ -41,6 +46,7 @@ class UserController{
 		http://localhost:8000/Drugi_dio_b/verify/?email='.$user['email'].'&hash='.$user['hash']; 	
 		
 		mail($to, $subject, $message);
+
 		$_SESSION['message_success'] = 
 		'Uspjesno ste se registrirali, za aktivaciju racuna
 		kliknite na poveznicu koju smo vam poslali na email';
@@ -51,7 +57,7 @@ class UserController{
 
 		$email = $_POST['email'];
 		$password = $_POST['lozinka'];
-		$user = App::get('database')->find('users','email',$email);
+		$user = User::find('email', $email);
 		if(empty($user)){
 			$_SESSION['message_danger'] ='Unijeli ste neispravnu email adresu';
 			return header('Location: /Drugi_dio_b/login/');
@@ -67,8 +73,8 @@ class UserController{
 			return header('Location: /Drugi_dio_b/login/');
 		}
 
-		App::get('database')->update('users','loginDate',date('Y-m-d H:i:s'),'id',$user->id);
-		$user = App::get('database')->find('users','email',$email);
+		User::update('loginDate',date('Y-m-d H:i:s'),'id',$user->id);
+		$user = User::find('email', $email);
 
 		$this->userSession($user);
 
@@ -78,6 +84,7 @@ class UserController{
 		unset($_SESSION['user_id']);
 		unset($_SESSION['ime']);
 		unset($_SESSION['prezime']);
+		unset($_SESSION['todos']);//session za sortiranje todo liste
 		return header('Location: /Drugi_dio_b/login');
 	}
 	protected function userSession($user){
@@ -85,20 +92,15 @@ class UserController{
 		$_SESSION['ime'] = $user->firstName;
 		$_SESSION['prezime'] = $user->lastName;
 	}
-	public function isLogin(){
-		if(isset($_SESSION['id'])){
-			return TRUE;
-		}
-		return FALSE;
-	}
+
 	public function verify(){
 		$email = $_GET['email'];
 		$hash = $_GET['hash'];
-		$user = App::get('database')->find('users','email',$email);
+		$user = User::find('email', $email);
 
 
 		if($user->status == 0 && $user->hash == $hash){
-			App::get('database')->update('users','status',1,'id',$user->id);
+			User::update('status',1,'id',$user->id);
 			$_SESSION['message_success'] = 
 			'Uspjesno ste se aktivirali, 
 			vas racun, mozete se prijaviti u sustav';
@@ -134,8 +136,8 @@ class UserController{
 		$errors['lastName_min'] = Validator::min($user['lastName'],$lastNameField,1);
 		//validacija lozinke
 		$errors['password_req']= Validator::required($user['password'],$passwordField);
-		$errors['lastName_max'] = Validator::max($user['lastName'],$passwordField,45);
-		$errors['lastName_min'] = Validator::min($user['lastName'],$passwordField,5);
+		$errors['password_max'] = Validator::max($user['password'],$passwordField,45);
+		$errors['password_min'] = Validator::min($user['password'],$passwordField,5);
 		foreach ($errors as $error) {
 			if(!empty($error)){
 				return $errors;

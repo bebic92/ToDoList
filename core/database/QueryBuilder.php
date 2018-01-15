@@ -27,6 +27,35 @@ class QueryBuilder{
 		$statment->execute();
 		return $statment->fetch(PDO::FETCH_OBJ); //dummy klasa
 	}
+	public function findAll($table, $rowName, $value){
+
+		$sql = sprintf('SELECT %s FROM %s WHERE %s = "%s"',
+			'*',
+			$table,
+			$rowName,
+			$value
+			);
+
+		$statment = $this->pdo->prepare($sql);
+		$statment->execute();
+		return $statment->fetchAll(PDO::FETCH_CLASS); //dummy klasa
+	}
+		public function findAndSort($table, $rowName, $value, $by, $how){
+
+		$sql = sprintf('SELECT %s FROM %s WHERE %s = "%s" ORDER BY %s %s',
+			'*',
+			$table,
+			$rowName,
+			$value,
+			$by,
+			$how
+			);
+
+		$statment = $this->pdo->prepare($sql);
+		$statment->execute();
+		return $statment->fetchAll(PDO::FETCH_CLASS); //dummy klasa
+	}
+
 	public function add($table, array $parameters){
 		$sql = sprintf('INSERT INTO %s (%s) values (%s)',
 			$table,
@@ -42,6 +71,16 @@ class QueryBuilder{
 			$par,
 			$par2,
 			$rowName,
+			$value
+			);
+		$statment=$this->pdo->prepare($sql);
+		$statment->execute();
+
+	}
+	public function delete($table, $row, $value){
+		$sql=sprintf('DELETE FROM %s WHERE %s = "%s"',
+			$table,
+			$row,
 			$value
 			);
 		$statment=$this->pdo->prepare($sql);
