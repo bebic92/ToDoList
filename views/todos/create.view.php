@@ -7,7 +7,7 @@
       <div class="blog-post">
         <h2 class="blog-post-title">Ovdje kreirate vašu listu</h2>
         <hr>
-        <form method="POST" action="/Drugi_dio_b/todos/kreiraj">
+        <form method="POST" action="/Drugi_dio_b/todos/create">
           <div class="form-group">
             <label for="exampleInputEmail1">Naziv liste</label>
             <input type="text" class="form-control" id="nazivListe" name="nazivListe" aria-describedby="nazivListe" placeholder="Unesite naziv liste">

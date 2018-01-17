@@ -51,7 +51,7 @@ class UserController{
 		$_SESSION['message_success'] = 
 		'Uspjesno ste se registrirali, za aktivaciju racuna
 		kliknite na poveznicu koju smo vam poslali na email';
-		return header('Location: /Drugi_dio_b/registracija');
+		return header('Location: /Drugi_dio_b/register');
 	}
 	//metoda za prijavu korisnika
 	public function loginUser(){

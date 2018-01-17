@@ -3,7 +3,7 @@
 
   <div class="row"> 
     <div class="col-sm-8 blog-main"> 
-      <a href="/Drugi_dio_b/todos/kreiraj" class="ml-md-auto"><input type="submit" value="Dodaj novu listu +" class="btn btn-primary"/></a>
+      <a href="/Drugi_dio_b/todos/create" class="ml-md-auto"><input type="submit" value="Dodaj novu listu +" class="btn btn-primary"/></a>
       <hr>   
       <?php if(!empty($todos)) :?>
         <form action="/Drugi_dio_b/todos/?" method="GET" align="right">

@@ -1,7 +1,7 @@
     <?php require 'views/partials/header.view.php' ?>
     <div class="container">
       <?php require 'views/alerts/success.view.php' ?>  
-      <form class="form-signin" method="POST" action="/Drugi_dio_b/registracija">
+      <form class="form-signin" method="POST" action="/Drugi_dio_b/register">
         <h2 class="form-signin-heading">Registraj se</h2>
         
         <label for="Ime" class="sr-only">Ime</label>

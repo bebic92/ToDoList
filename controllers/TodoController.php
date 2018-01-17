@@ -70,7 +70,7 @@ class TodoController {
 		$errors = $this->validateTodo($todo);
 		if(!empty($errors)){
 			$_SESSION['errors'] = $errors;
-			return header('Location: /Drugi_dio_b/todos/kreiraj/');
+			return header('Location: /Drugi_dio_b/todos/create/');
 		};
 		// ako je sve uredu spremi
 		App::get('database')->add('todos', $todo);
