@@ -85,6 +85,9 @@ h6,
   margin-bottom: 2rem;
   border-bottom: .05rem solid #eee;
 }
+.grey{
+  background-color: #efecec;
+}
 .blog-title {
   margin-bottom: 0;
   font-size: 2rem;

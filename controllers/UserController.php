@@ -84,7 +84,10 @@ class UserController{
 		unset($_SESSION['user_id']);
 		unset($_SESSION['ime']);
 		unset($_SESSION['prezime']);
-		unset($_SESSION['todos']);//session za sortiranje todo liste
+		unset($_SESSION['todos']);//session za prikaz todo listi
+		unset($_SESSION['sort_todos']);//session za tip sortiranja todo listi
+		unset($_SESSION['tasks']);
+		unset($_SESSION['sort_tasks']);
 		return header('Location: /Drugi_dio_b/login');
 	}
 	protected function userSession($user){

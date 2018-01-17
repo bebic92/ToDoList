@@ -6,29 +6,37 @@ class TodoController {
 		if(!isset($_SESSION['user_id'])){
 			return header('Location: /Drugi_dio_b/');
 		}
+		if(isset($_SESSION['task_id'])){ unset($_SESSION['task_id']);}
 
 	}
 
 	public function allTodos(){
 
 		// $todos = App::get('database')->findAll('todos','user_id',$_SESSION['user_id']);
-		// $tasks = App::get('database')->findAll('tasks','user_id',$_SESSION['user_id']);	
+		// $tasks = App::get('database')->findAll('tasks','user_id',$_SESSION['user_id']);
+		if(isset($_GET['sort'])){
+			$_SESSION['sort_todos'] = $_GET['sort'];
+			$this->getAndSort();		
+		}
+		if(isset($_SESSION['sort_todos'])){
+			return view('todos/show', ['todos'=> $_SESSION['sort_todos']]);
+		}
 		$todos = new Todo;
 		$todosTasks = $todos->todos($_SESSION['user_id']);
 		return view('todos/show', ['todos'=> $todosTasks]);
 	}
-	public function sort(){
+	public function getAndSort(){
 		$todos = new Todo;
-		if($_POST['sort'] == "naziv_asc"){
+		if($_SESSION['sort_todos'] == "naziv_asc"){
 			$_SESSION['todos'] = $todos->todosSort($_SESSION['user_id'],'listName','ASC');
 		};
-		if($_POST['sort'] == "naziv_desc"){
+		if($_SESSION['sort_todos'] == "naziv_desc"){
 			$_SESSION['todos'] = $todos->todosSort($_SESSION['user_id'],'listName','DESC');
 		};
-		if($_POST['sort'] == "vrijeme_desc"){
+		if($_SESSION['sort_todos'] == "vrijeme_desc"){
 			$_SESSION['todos'] = $todos->todosSort($_SESSION['user_id'],'created_at','DESC');
 		};
-		if($_POST['sort'] == "vrijeme_asc"){
+		if($_SESSION['sort_todos'] == "vrijeme_asc"){
 			$_SESSION['todos'] = $todos->todosSort($_SESSION['user_id'],'created_at','ASC');
 		};
 		return header('Location: /Drugi_dio_b/todos/');
@@ -52,7 +60,7 @@ class TodoController {
 		};
 
 		App::get('database')->add('todos', $todo);
-		return header('Location: /Drugi_dio_b/todos');
+		$this->getAndSort();
 	}
 
 	protected function validateTodo($todo){
@@ -67,10 +75,41 @@ class TodoController {
 		}
 	}
 	public function deleteTodo(){
-		if(isset($_SESSION['todos'])){unset($_SESSION['todos']);};{
+		if(isset($_SESSION['todos'])){unset($_SESSION['todos']);
 		App::get('database')->delete('todos', 'id', $_POST['id']);
 	}
-		return header('Location: /Drugi_dio_b/todos/');
+		$this->getAndSort();
 	}
 
+	public function show($todoId){
+		$todo = new Todo;
+		$todoDetails = $todo->todoDetails($_SESSION['user_id'],$todoId);
+		if(!empty($todoDetails)){
+			if($todoDetails->num_task != 0){
+				$avg=($todoDetails->num_task - $todoDetails->uncompleted);
+				$avg = ($avg / $todoDetails->num_task) * 100;
+			}else{
+				$avg = "";
+			}
+				
+			if(isset($_SESSION['sort_tasks']) && $_SESSION['todo_id'] == $todoId){
+			return view('todos/showDetails',[
+				'todo' => $todoDetails, 
+				'avg' => $avg,
+				'todoTasks' => $_SESSION['tasks']
+				]);
+
+			}
+			$_SESSION['todo_id'] = $todoDetails->todoId;
+			$todoTasks = $todo->todoTasks($todoId); 
+			return view('todos/showDetails',[
+				'todo' => $todoDetails, 
+				'avg' => $avg,
+				'todoTasks' => $todoTasks
+				]);
+
+		}else{
+			return header('Location: /Drugi_dio_b/todos');
+		}
+	}
 }
