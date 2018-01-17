@@ -51,7 +51,8 @@
             <?php if($todoTask->priority == 'normal'){print "Normalan";}
             elseif ($todoTask->priority == 'high'){print "Visok";}else{print "Nizak";}?></a></p>
             
-            <div class="row">       
+            <div class="row">
+            <a href="/Drugi_dio_b/todo/task/update/<?= $todoTask->taskId; ?>" class="ml-3"><input type="submit" value="Uredi zadatak" class="btn btn-success"/></a>
             <form method="POST" action="/Drugi_dio_b/task/delete" class="ml-md-auto">
               <input type="hidden" name="task_id" value="<?=$todoTask->taskId; ?>">
               <input type="submit" value="Brisi" class="btn btn-danger"/>

@@ -18,14 +18,21 @@ class TodoController {
 			$_SESSION['sort_todos'] = $_GET['sort'];
 			$this->getAndSort();		
 		}
-		if(isset($_SESSION['sort_todos'])){
-			return view('todos/show', ['todos'=> $_SESSION['sort_todos']]);
+		if(isset($_SESSION['task_details_change']) && isset($_SESSION['sort_todos'])){
+			$this->getAndSort();
+			return view('todos/show', ['todos'=> $_SESSION['todos']]);
 		}
+		if(isset($_SESSION['sort_todos'])){
+			return view('todos/show', ['todos'=> $_SESSION['todos']]);
+		}
+
+		
 		$todos = new Todo;
 		$todosTasks = $todos->todos($_SESSION['user_id']);
 		return view('todos/show', ['todos'=> $todosTasks]);
 	}
 	public function getAndSort(){
+
 		$todos = new Todo;
 		if($_SESSION['sort_todos'] == "naziv_asc"){
 			$_SESSION['todos'] = $todos->todosSort($_SESSION['user_id'],'listName','ASC');
@@ -39,6 +46,10 @@ class TodoController {
 		if($_SESSION['sort_todos'] == "vrijeme_asc"){
 			$_SESSION['todos'] = $todos->todosSort($_SESSION['user_id'],'created_at','ASC');
 		};
+		if(isset($_SESSION['task_details_change'])){
+			unset($_SESSION['task_details_change']);
+			return;
+		}
 		return header('Location: /Drugi_dio_b/todos/');
 	}
 
@@ -60,7 +71,11 @@ class TodoController {
 		};
 
 		App::get('database')->add('todos', $todo);
-		$this->getAndSort();
+		if(isset($_SESSION['sort_todos'])){
+			$this->getAndSort();
+		}else{
+			$this->allTodos();
+		}
 	}
 
 	protected function validateTodo($todo){
@@ -75,10 +90,14 @@ class TodoController {
 		}
 	}
 	public function deleteTodo(){
-		if(isset($_SESSION['todos'])){unset($_SESSION['todos']);
+		if(isset($_SESSION['todos'])){unset($_SESSION['todos']);}	
 		App::get('database')->delete('todos', 'id', $_POST['id']);
-	}
-		$this->getAndSort();
+		
+		if(isset($_SESSION['sort_todos'])){
+			$this->getAndSort();
+		}else{
+			$this->allTodos();
+		}
 	}
 
 	public function show($todoId){
@@ -92,7 +111,7 @@ class TodoController {
 				$avg = "";
 			}
 				
-			if(isset($_SESSION['sort_tasks']) && $_SESSION['todo_id'] == $todoId){
+			if(isset($_SESSION['sort_tasks']) && $_SESSION['todo_id'] == $todoId && isset($_SESSION['tasks'])){
 			return view('todos/showDetails',[
 				'todo' => $todoDetails, 
 				'avg' => $avg,

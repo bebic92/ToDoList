@@ -12,7 +12,7 @@
             <label for="exampleInputEmail1">Naziv liste</label>
             <input type="text" class="form-control" id="nazivListe" name="nazivListe" aria-describedby="nazivListe" placeholder="Unesite naziv liste">
           </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
+          <button type="submit" class="btn btn-primary">Kreiraj</button>
         </form>
 
         </div>

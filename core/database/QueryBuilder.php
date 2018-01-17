@@ -65,18 +65,19 @@ class QueryBuilder{
 		$statment = $this->pdo->prepare($sql);
 		$statment->execute($parameters);
 	}
-	public function update($table, $par, $par2, $rowName, $value){
+	public function update($table, $par, $par2, $rowName, $equal){
 		$sql=sprintf('UPDATE %s SET %s = "%s" where %s = "%s"',
 			$table,
 			$par,
 			$par2,
 			$rowName,
-			$value
+			$equal
 			);
 		$statment=$this->pdo->prepare($sql);
 		$statment->execute();
-
+		
 	}
+
 	public function delete($table, $row, $value){
 		$sql=sprintf('DELETE FROM %s WHERE %s = "%s"',
 			$table,

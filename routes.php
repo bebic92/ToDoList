@@ -22,3 +22,5 @@ $router->get('Drugi_dio_b/todo/task/create','TasksController@create');
 $router->post('Drugi_dio_b/todo/task/create','TasksController@store');
 $router->post('Drugi_dio_b/task/delete','TasksController@delete');
 $router->get('Drugi_dio_b/todo/tasks/sort','TasksController@getAndSortTasks');
+$router->get('Drugi_dio_b/todo/task/update/{id}','TasksController@updatePage');
+$router->post('Drugi_dio_b/todo/task/update','TasksController@update');

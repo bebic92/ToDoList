@@ -7,10 +7,20 @@ class Task{
 
 		$this->pdo = Connection::make(App::get('config')['database']);
 	}
-
-	public static function all(){
-		return App::get('database')->getAll('todos'); 
+	public function update($table, array $par, $rowName, $equal){
+		foreach ($par as $key => $value) {
+		$sql=sprintf('UPDATE %s SET %s = "%s" where %s = "%s"',
+			$table,
+			$key,
+			$value,
+			$rowName,
+			$equal
+			);
+		$statment=$this->pdo->prepare($sql);
+		$statment->execute();
+		}
 	}
+
 	public function todos($user_id){
 		$sql = 'SELECT listName, created_at, tasks.id as taskId, todos.id as todoId , status, user_id, count(tasks.id) as num_task,
 				count(case when status = "0" then 1 else null end) as uncompleted
@@ -35,5 +45,16 @@ class Task{
 		$statment = $this->pdo->prepare($sql);
 		$statment->execute();
 		return $statment->fetchAll(PDO::FETCH_CLASS);
+	}
+	public function taskDetails($todoId, $taskId){
+		$sql = 'SELECT taskName, priority, deadline, id as taskId, 
+				todo_id as todoId , status, DATEDIFF(deadline,NOW()) as DateDiff
+				FROM tasks  
+                WHERE todo_id ='. $todoId .' AND id ='. $taskId .'
+                group by tasks.id';
+	
+		$statment = $this->pdo->prepare($sql);
+		$statment->execute();
+		return $statment->fetch(PDO::FETCH_OBJ);
 	}
 }

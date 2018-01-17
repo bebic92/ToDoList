@@ -36,4 +36,14 @@ class Validator{
 		}else
 		return;
 	}
+	public static function dateMin($date1, $fieldName, $date2){
+		$date1 = date_create($date1);
+		$date2 = date_create($date2);
+		$diff = date_diff($date2, $date1);
+		$diff=((int)$diff->format("%R%a"));
+		if($diff < 0){
+			return ucfirst($fieldName) .' teba biti veci od danasnjeg datuma';
+		}else
+		return;
+	}
 }
