@@ -15,8 +15,8 @@
           <button type="submit" class="btn btn-primary">Kreiraj</button>
         </form>
 
-        </div>
-        <?php require 'views/errors/errors.view.php' ?> 
+      </div>
+      <?php require 'views/errors/errors.view.php' ?> 
     </div>
 
   </div>

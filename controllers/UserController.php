@@ -2,13 +2,14 @@
 
 class UserController{
 
-
+	// ukoliko je korisnik logiran nema pristup stranici za registracijiu
 	public function create(){
 		if(isset($_SESSION['user_id'])){
 			return header('Location: /Drugi_dio_b/');
 		}
 		return view('registration/register');
 	}
+	// ukoliko je korisnik logiran nema pristup stranici za prijavu
 	public function signIn(){
 		if(isset($_SESSION['user_id'])){
 			return header('Location: /Drugi_dio_b/');
@@ -52,34 +53,38 @@ class UserController{
 		kliknite na poveznicu koju smo vam poslali na email';
 		return header('Location: /Drugi_dio_b/registracija');
 	}
-
+	//metoda za prijavu korisnika
 	public function loginUser(){
 
 		$email = $_POST['email'];
 		$password = $_POST['lozinka'];
 		$user = User::find('email', $email);
+		// provjera ispravnosti emaila
 		if(empty($user)){
 			$_SESSION['message_danger'] ='Unijeli ste neispravnu email adresu';
 			return header('Location: /Drugi_dio_b/login/');
 		}
+		//provjeravamo je li korisnik aktivirao racun
 		if($user->status == 0){
 			$_SESSION['message_danger'] =
 			'Vaš račun nije aktiviran, 
 			aktivirajte ga klikom na poveznicu koju smo vam poslali na vas email';
 			return header('Location: /Drugi_dio_b/login/');
 		}
+		//provjeravamo ispravnost lozinke
 		if(!password_verify($password, $user->password)){
 			$_SESSION['message_danger'] = 'Unesena email adresa i lozinka se ne slazu';
 			return header('Location: /Drugi_dio_b/login/');
 		}
-
+		// spremamo vrijeme prijave i dohvaćamo korisnika
 		User::update('loginDate',date('Y-m-d H:i:s'),'id',$user->id);
 		$user = User::find('email', $email);
-
+		// spremamo podatke o korisniku u session
 		$this->userSession($user);
 
 		return header('Location: /Drugi_dio_b/');
 	}
+	// odjava korisnika brisemo sve session-e
 	public function logoutUser(){
 		unset($_SESSION['user_id']);
 		unset($_SESSION['ime']);
@@ -117,7 +122,7 @@ class UserController{
 
 		
 	}
-
+	//validacija unesenih podataka prilikom registracije
 	protected function registerValidation($user){
 		$emailField ='Email adresa';
 		$firstNameField = 'Ime';

@@ -1,4 +1,5 @@
 <?php
+//spremanje podataka za spajanje na bazu
 return [
 	'database' => [
 		'type' =>'mysql',

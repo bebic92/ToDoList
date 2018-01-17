@@ -1,5 +1,5 @@
 <?php
-
+//dohvaćamo url podatke, i request method
 class Request{
 
 	public static function uri(){

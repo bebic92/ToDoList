@@ -4,10 +4,10 @@
         <a href="#">Back to top</a>
       </p>
     </footer>
-<script>
- 
+    <script>
+     
 
-</script>
+    </script>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
@@ -16,4 +16,4 @@
     <script src="../../../../assets/js/vendor/popper.min.js"></script>
     <script src="../../../../dist/js/bootstrap.min.js"></script>
   </body>
-</html>
+  </html>

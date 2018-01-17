@@ -13,14 +13,7 @@
         <button class="btn btn-lg btn-primary btn-block" type="submit">Prijava</button>
       </form>
 
-    </div> <!-- /container -->
-
-
-    <?php if(isset($errors)) : ?>
-    <?php foreach ($errors as $error) : ?>
-        <?php if(!empty($error)) :?>
-        <li><?= $error ?></li>
-    <?php endif; ?>
-    <?php endforeach; ?>   
-    <?php endif; ?>
+    </div> 
+      <?php require 'views/errors/errors.view.php' ?>
+       
 <?php require 'views/partials/footer.view.php' ?>

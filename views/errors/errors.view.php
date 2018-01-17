@@ -12,4 +12,4 @@
 			<div class="alert alert-danger"><li><?= $error ?></li></div>
 		<?php endif; ?>	  
 	<?php endforeach; ?>   
-<?php unset($_SESSION['errors']); endif; ?>
+	<?php unset($_SESSION['errors']); endif; ?>

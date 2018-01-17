@@ -1,7 +1,7 @@
 <?php
 
 class TodoController {
-
+	//samo logirani korisnik ima pristup metodama, 
 	public function __construct(){
 		if(!isset($_SESSION['user_id'])){
 			return header('Location: /Drugi_dio_b/');
@@ -10,23 +10,24 @@ class TodoController {
 
 	}
 
+	//prikaz svih listi
 	public function allTodos(){
-
-		// $todos = App::get('database')->findAll('todos','user_id',$_SESSION['user_id']);
-		// $tasks = App::get('database')->findAll('tasks','user_id',$_SESSION['user_id']);
+		//ako je korisnik kliknuo botun sort 
 		if(isset($_GET['sort'])){
 			$_SESSION['sort_todos'] = $_GET['sort'];
 			$this->getAndSort();		
 		}
+		//ako su se dogodile promjene u bazi vezane za task, i ako je task sortiran
 		if(isset($_SESSION['task_details_change']) && isset($_SESSION['sort_todos'])){
 			$this->getAndSort();
 			return view('todos/show', ['todos'=> $_SESSION['todos']]);
 		}
+		// ako su već sortirani
 		if(isset($_SESSION['sort_todos'])){
 			return view('todos/show', ['todos'=> $_SESSION['todos']]);
 		}
 
-		
+		//ako nije nista od navedenog dohvati i prikazi
 		$todos = new Todo;
 		$todosTasks = $todos->todos($_SESSION['user_id']);
 		return view('todos/show', ['todos'=> $todosTasks]);
@@ -52,25 +53,29 @@ class TodoController {
 		}
 		return header('Location: /Drugi_dio_b/todos/');
 	}
-
+	// prikaz stranice za kreiranje todo-a
 	public function createTodo(){
 		return view('todos/create');
 	}
 
 	public function storeTodo(){
-		if(isset($_SESSION['todos'])){unset($_SESSION['todos']);};
+		
+		//dohvaćanje podataka
 		$todo = [
 		'listName' => $_POST['nazivListe'],
 		'created_at' => date('Y-m-d H:i:s'),
 		'user_id' => $_SESSION['user_id']
 		];
+		// provjera gresaka
 		$errors = $this->validateTodo($todo);
 		if(!empty($errors)){
 			$_SESSION['errors'] = $errors;
 			return header('Location: /Drugi_dio_b/todos/kreiraj/');
 		};
-
+		// ako je sve uredu spremi
 		App::get('database')->add('todos', $todo);
+		if(isset($_SESSION['todos'])){unset($_SESSION['todos']);};
+		//ako su vec sortirani dohvati i sortiraj ponovo, ako ne idi na dohvaćanje i provjeri razlicite uvjete
 		if(isset($_SESSION['sort_todos'])){
 			$this->getAndSort();
 		}else{
@@ -89,28 +94,31 @@ class TodoController {
 			return;
 		}
 	}
+	// brisanje
 	public function deleteTodo(){
-		if(isset($_SESSION['todos'])){unset($_SESSION['todos']);}	
 		App::get('database')->delete('todos', 'id', $_POST['id']);
-		
+
+		if(isset($_SESSION['todos'])){unset($_SESSION['todos']);}
 		if(isset($_SESSION['sort_todos'])){
 			$this->getAndSort();
 		}else{
 			$this->allTodos();
 		}
 	}
-
+	// prikaz detalja određene todo liste
 	public function show($todoId){
+		//pronađi listu na koju je korisnik kliknuo
 		$todo = new Todo;
 		$todoDetails = $todo->todoDetails($_SESSION['user_id'],$todoId);
 		if(!empty($todoDetails)){
+			//ako je broj taskova veci od  izracunaj napredak
 			if($todoDetails->num_task != 0){
 				$avg=($todoDetails->num_task - $todoDetails->uncompleted);
 				$avg = ($avg / $todoDetails->num_task) * 100;
 			}else{
 				$avg = "";
 			}
-				
+			//ako je korisnik već bio u  tasku	
 			if(isset($_SESSION['sort_tasks']) && $_SESSION['todo_id'] == $todoId && isset($_SESSION['tasks'])){
 			return view('todos/showDetails',[
 				'todo' => $todoDetails, 
@@ -119,6 +127,7 @@ class TodoController {
 				]);
 
 			}
+			// ako je korisnik kliknuo na neki drugi task 
 			$_SESSION['todo_id'] = $todoDetails->todoId;
 			$todoTasks = $todo->todoTasks($todoId); 
 			return view('todos/showDetails',[
@@ -127,7 +136,7 @@ class TodoController {
 				'todoTasks' => $todoTasks
 				]);
 
-		}else{
+		}else{// ako nije nista od navedenog
 			return header('Location: /Drugi_dio_b/todos');
 		}
 	}
